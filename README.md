@@ -1,0 +1,2 @@
+# MyPython
+Some python practices
