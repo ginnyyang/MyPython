@@ -5,8 +5,7 @@
 #OOP把对象作为程序的基本单元，一个对象包含了数据和操作数据的函数。
 #面向对象的设计思想是抽象出Class，根据Class创建Instance
 
-#既然Student实例本身就拥有这些数据，要访问这些数据，就没有必要从外面的函数去访问，可以直接在Student类的内部定义访问数据的函数，这样，就把“数据”给封装起来了。
-#这些封装数据的函数是和Student类本身是关联起来的，我们称之为类的方法：
+#封装的另一个好处是可以给Student类增加新的方法，比如get_grade：
 class Student(object):
 
 	def __init__(self,name,score):
@@ -15,6 +14,19 @@ class Student(object):
 	
 	def print_score(self):
 		print('%s:%s'%(self.name,self.score))
+		
+	def get_grade(self):
+		if self.score>90:
+			return 'A'
+		elif self.score>=60:
+			return 'B'
+		else:
+			return 'C'
 	
 yangjing=Student('Ginny Yang',100)
-yangjing.print_score()
+yangjing2=Student('Ginny2 Yang',80)
+yangjing3=Student('Ginny3 Yang',59)
+
+print(yangjing.name,yangjing.get_grade())
+print(yangjing2.name,yangjing2.get_grade())
+print(yangjing3.name,yangjing3.get_grade())
