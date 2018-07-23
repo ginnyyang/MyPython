@@ -5,7 +5,7 @@
 #OOP把对象作为程序的基本单元，一个对象包含了数据和操作数据的函数。
 #面向对象的设计思想是抽象出Class，根据Class创建Instance
 
-#如果又要允许外部代码修改score怎么办？可以再给Student类增加set_score方法
+#原先那种直接通过bart.score = 99也可以修改啊，为什么要定义一个方法大费周折？因为在方法中，可以对参数做检查，避免传入无效的参数：
 class Student(object):
 
 	def __init__(self,name,score):
@@ -22,10 +22,17 @@ class Student(object):
 		return self.__score
 		
 	def set_score(self,score):
-		self.__score=score
+		if 0<score<100:
+			self.__score=score
+		else:
+			raise ValueError('bad score')
 		
 yangjing=Student('Ginny Yang',100)
 print(yangjing.get_name(),':',yangjing.get_score())
 yangjing.set_score(10)
 print(yangjing.get_name(),':',yangjing.get_score())
+yangjing.set_score(200)
+print(yangjing.get_name(),':',yangjing.get_score())
+
+
 
