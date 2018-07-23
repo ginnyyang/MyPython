@@ -5,7 +5,7 @@
 #OOP把对象作为程序的基本单元，一个对象包含了数据和操作数据的函数。
 #面向对象的设计思想是抽象出Class，根据Class创建Instance
 
-#如果外部代码要获取name和score怎么办？可以给Student类增加get_name和get_score这样的方法：
+#如果又要允许外部代码修改score怎么办？可以再给Student类增加set_score方法
 class Student(object):
 
 	def __init__(self,name,score):
@@ -21,14 +21,11 @@ class Student(object):
 	def get_score(self):
 		return self.__score
 		
-#	def get_grade(self):
-#		if self.score>90:
-#			return 'A'
-#		elif self.score>=60:
-#			return 'B'
-#		else:
-#			return 'C'
-	
+	def set_score(self,score):
+		self.__score=score
+		
 yangjing=Student('Ginny Yang',100)
+print(yangjing.get_name(),':',yangjing.get_score())
+yangjing.set_score(10)
 print(yangjing.get_name(),':',yangjing.get_score())
 
