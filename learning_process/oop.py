@@ -30,3 +30,7 @@ yangjing3=Student('Ginny3 Yang',59)
 print(yangjing.name,yangjing.get_grade())
 print(yangjing2.name,yangjing2.get_grade())
 print(yangjing3.name,yangjing3.get_grade())
+
+#从前面Student类的定义来看，外部代码还是可以自由地修改一个实例的name、score属性
+yangjing.score=10
+yangjing.print_score()
