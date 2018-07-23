@@ -5,32 +5,25 @@
 #OOP把对象作为程序的基本单元，一个对象包含了数据和操作数据的函数。
 #面向对象的设计思想是抽象出Class，根据Class创建Instance
 
-#封装的另一个好处是可以给Student类增加新的方法，比如get_grade：
+#如果要让内部属性不被外部访问，可以把属性的名称前加上两个下划线__，
+#在Python中，实例的变量名如果以__开头，就变成了一个私有变量（private），只有内部可以访问，外部不能访问，
+#所以，我们把Student类改一改：
 class Student(object):
 
 	def __init__(self,name,score):
-		self.name=name
-		self.score=score
+		self.__name=name
+		self.__score=score
 	
 	def print_score(self):
-		print('%s:%s'%(self.name,self.score))
+		print('%s:%s'%(self.__name,self.__score))
 		
-	def get_grade(self):
-		if self.score>90:
-			return 'A'
-		elif self.score>=60:
-			return 'B'
-		else:
-			return 'C'
+#	def get_grade(self):
+#		if self.score>90:
+#			return 'A'
+#		elif self.score>=60:
+#			return 'B'
+#		else:
+#			return 'C'
 	
 yangjing=Student('Ginny Yang',100)
-yangjing2=Student('Ginny2 Yang',80)
-yangjing3=Student('Ginny3 Yang',59)
-
-print(yangjing.name,yangjing.get_grade())
-print(yangjing2.name,yangjing2.get_grade())
-print(yangjing3.name,yangjing3.get_grade())
-
-#从前面Student类的定义来看，外部代码还是可以自由地修改一个实例的name、score属性
-yangjing.score=10
-yangjing.print_score()
+print(yangjing.__name)
