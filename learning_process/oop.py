@@ -18,3 +18,12 @@ class Student(object):
 yangjing=Student('Ginny Yang',100)
 print(yangjing.name)
 print(yangjing.score)
+
+#面向对象编程的一个重要特点就是数据封装。
+#在上面的Student类中，每个实例就拥有各自的name和score这些数据。
+#我们可以通过函数来访问这些数据，比如打印一个学生的成绩：
+
+def print_score(std):
+	print('%s:%s'%(std.name,std.score))
+
+print_score(yangjing)
