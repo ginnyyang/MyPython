@@ -5,15 +5,28 @@
 #除此之外，Python的class中还有许多这样有特殊用途的函数，可以帮助我们定制类。
 
 #__getitem__
-#要表现得像list那样按照下标取出元素，需要实现__getitem__()方法
+#list有个神奇的切片方法，对于Fib却报错。原因是__getitem__()传入的参数可能是一个int，也可能是一个切片对象slice，所以要做判断
 class Fib(object):
 	def __getitem__(self,n):
-		a,b=1,1
-		for x in range(n):
-			a,b=b,a+b
-		return a
+		if isinstance(n,int):
+			a,b=1,1
+			for x in range(n):
+				a,b=b,a+b
+			return a
+		if isinstance(n,slice):
+			start=n.start
+			stop=n.stop
+			if start is None:
+				start=0
+			a,b=1,1
+			L=[]
+			for x in range(stop):
+				if x>=start:
+					L.append(a)
+				a,b=b,a+b
+			return L
 
 f=Fib()
-print(f[0])
-print(f[100])
+print(f[0:5])
+print(f[:10])
 
