@@ -4,7 +4,10 @@
 #如果执行出错，则后续代码不会继续执行，而是直接跳转至错误处理代码，即except语句块，
 #执行完except后，如果有finally语句块，则执行finally语句块，至此，执行完毕
 
-#如果错误没有被捕获，它就会一直往上抛，最后被Python解释器捕获，打印一个错误信息，然后程序退出
+#如果不捕获错误，自然可以让Python解释器来打印出错误堆栈，但程序也被结束了。
+#既然我们能捕获错误，就可以把错误堆栈打印出来，然后分析错误原因，同时，让程序继续执行下去。
+#Python内置的logging模块可以非常容易地记录错误信息
+import logging
 def foo(s):
 	return 10/int(s)
 	
@@ -12,17 +15,20 @@ def bar(s):
 	return foo(s)*2
 	
 def main():
-	bar('0')
-
+	try:
+		bar('0')
+	except Exception as e:
+		logging.exception(e)
 main()
-#执行结果：
-#Traceback (most recent call last):--------告诉我们这是错误的跟踪信息
-#  File "err.py", line 11, in <module>-----调用main()出错了，在代码文件err.py的第11行代码，但原因是第9行
-#    main()
-#  File "err.py", line 9, in main----------调用bar('0')出错了，在代码文件err.py的第9行代码，但原因是第6行
+print('END')
+#执行结果：同样是出错，但程序打印完错误信息后会继续执行，并正常退出
+#ERROR:root:division by zero
+#Traceback (most recent call last):
+#  File "err_logging.py", line 13, in main
 #    bar('0')
-#  File "err.py", line 6, in bar-----------原因是return foo(s) * 2这个语句出错了，但这还不是最终原因
+#  File "err_logging.py", line 9, in bar
 #    return foo(s) * 2
-#  File "err.py", line 3, in foo-----------原因是return 10 / int(s)这个语句出错了，这是错误产生的源头，因为下面打印了ZeroDivisionError
+#  File "err_logging.py", line 6, in foo
 #    return 10 / int(s)
 #ZeroDivisionError: division by zero
+#END
