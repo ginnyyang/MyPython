@@ -5,7 +5,8 @@
 #执行完except后，如果有finally语句块，则执行finally语句块，至此，执行完毕
 try:
 	print('try...')
-	r=10/0
+#如果把除数0改成2
+	r=10/2
 	print('result:',r)
 except ZeroDivisionError as e:
 	print('except:',e)
@@ -13,6 +14,4 @@ finally:
 	print('finally...')
 print('END')
 
-#从输出可以看到，当错误发生时，后续语句print('result:', r)不会被执行，
-#except由于捕获到ZeroDivisionError，因此被执行。
-#最后，finally语句被执行。然后，程序继续按照流程往下走
+#由于没有错误发生，所以except语句块不会被执行，但是finally如果有，则一定会被执行（可以没有finally语句）
