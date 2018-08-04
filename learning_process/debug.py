@@ -1,28 +1,39 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#第三种方法：logging不会抛出错误，而且可以输出到文件
-import logging
-logging.basicConfig(level=logging.INFO)#添加一行配置再试试
-
-def foo(s):
-	n=int(s)
-	logging.info('>>>n=%d'%n)#运行，发现除了ZeroDivisionError，没有任何信息。
-	return 10/n
-	
-def main():
-	foo('0')
-	
-main()
+#第4种方式是启动Python的调试器pdb，让程序以单步方式运行，可以随时查看运行状态
+s='0'
+n=int(s)
+print(10/n)
 
 #执行结果：
-#INFO:root:n = 0
-#Traceback (most recent call last):
-#  File "err.py", line 8, in <module>
-#    print(10 / n)
-#ZeroDivisionError: division by zero
+#python -m pdb debug.py------->启动
+#> c:\users\jingoal\mypython\learning_process\debug.py(5)<module>()
+#-> s='0'--------------------->pdb定位到下一步要执行的代码-> s = '0'
+#(Pdb) l---------------------->输入命令l来查看代码
+#  1     #!/usr/bin/env python3
+#  2     # -*- coding: utf-8 -*-
+#  3
+#  4     #第4种方式是启动Python的调试器pdb，让程序以单步方式运行，可以随时查看运行状态
+#  5  -> s='0'
+#  6     n=int(s)
+#  7     print(10/n)
+#  8
+#  9     #执行结果：
+# 10
+# 11
+#(Pdb) n------------------------>输入命令n可以单步执行代码
+#> c:\users\jingoal\mypython\learning_process\debug.py(6)<module>()
+#-> n=int(s)
+#(Pdb) p s--------------------->任何时候都可以输入命令p 变量名来查看变量
+#'0'
+#(Pdb) n
+#> c:\users\jingoal\mypython\learning_process\debug.py(7)<module>()
+#-> print(10/n)
+#(Pdb) p n
+#0
+#(Pdb) q---------------------->输入命令q结束调试，退出程序
 
-#logging的好处，它允许你指定记录信息的级别，有debug，info，warning，error等几个级别，当我们指定level=INFO时，logging.debug就不起作用了。
-#同理，指定level=WARNING后，debug和info就不起作用了。这样一来，你可以放心地输出不同级别的信息，也不用删除，最后统一控制输出哪个级别的信息。
-#logging的另一个好处是通过简单的配置，一条语句可以同时输出到不同的地方，比如console和文件。
+#这种通过pdb在命令行调试的方法理论上是万能的，但实在是太麻烦了，如果有一千行代码，要运行到第999行得敲多少命令啊
+
 
