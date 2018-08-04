@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#第二种方法凡是用print()来辅助查看的地方，都可以用断言（assert）来替代：
+#第三种方法：logging不会抛出错误，而且可以输出到文件
+import logging
+logging.basicConfig(level=logging.INFO)#添加一行配置再试试
+
 def foo(s):
 	n=int(s)
-	assert n!=0,'n is zero'#assert的意思是，表达式n != 0应该是True，否则，根据程序运行的逻辑，后面的代码肯定会出错。如果断言失败，assert语句本身就会抛出AssertionError：
+	logging.info('>>>n=%d'%n)#运行，发现除了ZeroDivisionError，没有任何信息。
 	return 10/n
 	
 def main():
@@ -13,22 +16,13 @@ def main():
 main()
 
 #执行结果：
+#INFO:root:n = 0
 #Traceback (most recent call last):
-#  File "debug.py", line 13, in <module>
-#    main()
-#  File "debug.py", line 11, in main
-#    foo('0')
-#  File "debug.py", line 7, in foo
-#    assert n!=0,'n is zero'
-#AssertionError: n is zero
-
-#程序中如果到处充斥着assert，和print()相比也好不到哪去。不过，启动Python解释器时可以用-O参数来关闭assert：
-#python -O debug.py
-#Traceback (most recent call last):
-#  File "debug.py", line 13, in <module>
-#    main()
-#  File "debug.py", line 11, in main
-#    foo('0')
-#  File "debug.py", line 8, in foo
-#    return 10/n
+#  File "err.py", line 8, in <module>
+#    print(10 / n)
 #ZeroDivisionError: division by zero
+
+#logging的好处，它允许你指定记录信息的级别，有debug，info，warning，error等几个级别，当我们指定level=INFO时，logging.debug就不起作用了。
+#同理，指定level=WARNING后，debug和info就不起作用了。这样一来，你可以放心地输出不同级别的信息，也不用删除，最后统一控制输出哪个级别的信息。
+#logging的另一个好处是通过简单的配置，一条语句可以同时输出到不同的地方，比如console和文件。
+
