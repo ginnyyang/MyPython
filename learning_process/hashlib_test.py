@@ -1,26 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #设计一个验证用户登录的函数，根据用户输入的口令是否正确，返回True或False
-import hashlib
-def get_md5(password):
-	md5 = hashlib.md5()
-	md5.update(password.encode('utf-8'))
-	return md5.hexdigest()
+#根据用户输入的登录名和口令模拟用户注册，计算更安全的MD5
+import hashlib,random
+
+def get_md5(s):
+	return hashlib.md5(s.encode('utf-8')).hexdigest()
+
+class User(object):
+	def __init__(self, username, password):
+		self.username = username
+		self.salt = ''.join([chr(random.randint(48, 122)) for i in range(20)])
+		self.password = get_md5(password + self.salt)
 
 db = {
-	'michael': 'e10adc3949ba59abbe56e057f20f883e',
-	'bob': '878ef96e86145580c38c87f0410ad153',
-	'alice': '99b1c2188db85afee403b1536010c2c9'
+	'michael': User('michael', '123456'),
+	'bob': User('bob', 'abc999'),
+	'alice': User('alice', 'alice2008')
 }
 
 def login(username, password):
 	user=db[username]
-	if user == get_md5(password):
-		return True
-	else:
-		return False
-	
-	
+	return user.password == get_md5(password + user.salt)
+
 # 测试:
 assert login('michael', '123456')
 assert login('bob', 'abc999')
