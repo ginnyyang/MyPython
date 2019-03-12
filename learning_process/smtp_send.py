@@ -88,7 +88,9 @@ msg.attach(MIMEText('<html><body><h1>Hello</h1></body></html>', 'html', 'utf-8')
 
 
 import smtplib
-server=smtplib.SMTP(smtp_server,25)
+#使用标准的25端口连接SMTP服务器时，使用的是明文传输，发送邮件的整个过程可能会被窃听。
+#要更安全地发送邮件，可以加密SMTP会话，实际上就是先创建SSL安全连接，然后再使用SMTP协议发送邮件。
+server=smtplib.SMTP_SSL(smtp_server,465)
 server.set_debuglevel(1)#用set_debuglevel(1)就可以打印出和SMTP服务器交互的所有信息
 server.login(from_addr,password)#login()方法用来登录SMTP服务器
 server.sendmail(from_addr,[to_addr],msg.as_string())#sendmail()方法就是发邮件
