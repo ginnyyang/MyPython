@@ -48,34 +48,44 @@ smtp_server="smtp.163.com"
 #带附件的邮件可以看做包含若干部分的邮件：文本和各个附件本身，
 #所以，可以构造一个MIMEMultipart对象代表邮件本身，然后往里面加上一个MIMEText作为邮件正文，
 #再继续往里面加上表示附件的MIMEBase对象即可
-msg = MIMEMultipart()
+
+#如果我们发送HTML邮件，收件人通过浏览器或者Outlook之类的软件是可以正常浏览邮件内容的，但是，如果收件人使用的设备太古老，查看不了HTML邮件怎么办？
+#办法是在发送HTML的同时再附加一个纯文本，如果收件人无法查看HTML格式的邮件，就可以自动降级查看纯文本邮件。
+#利用MIMEMultipart就可以组合一个HTML和Plain，要注意指定subtype是alternative
+msg = MIMEMultipart('alternative')
 msg['From'] = _format_addr('Python爱好者 <%s>' % from_addr)
 msg['To'] = _format_addr('管理员 <%s>' % to_addr)
 msg['Subject'] = Header('来自SMTP的问候……', 'utf-8').encode()
+
+msg.attach(MIMEText('hello', 'plain', 'utf-8'))
+msg.attach(MIMEText('<html><body><h1>Hello</h1></body></html>', 'html', 'utf-8'))
 
 #如果要把一个图片嵌入到邮件正文中怎么做？
 #直接在HTML邮件中链接图片地址行不行？答案是，大部分邮件服务商都会自动屏蔽带有外链的图片，因为不知道这些链接是否指向恶意网站。
 #要把图片嵌入到邮件正文中，我们只需按照发送附件的方式，先把邮件作为附件添加进去，然后，在HTML中通过引用src="cid:0"就可以把附件作为图片嵌入了。
 #如果有多个图片，给它们依次编号，然后引用不同的cid:x即可
 #邮件正文是MIMEText:
-msg.attach(MIMEText('<html><body><h1>Hello</h1>'+
-	'<p><img src="cid:0"></p>'+
-	'</body></html>', 'html', 'utf-8'))
+#msg.attach(MIMEText('<html><body><h1>Hello</h1>'+
+#	'<p><img src="cid:0"></p>'+
+#	'</body></html>', 'html', 'utf-8'))
 
 #添加附件就是加上一个MIMEBase，从本地读取一个图片:
-with open('C:/Users/jingoal/MyPython/learning_process/2523reopen0510.png','rb') as f:
-	#设置附件的MIME和文件名，这里是png类型:
-	mime=MIMEBase('image','png',filename='2523reopen0510.png')
-	#加上必要的头信息:
-	mime.add_header('Content-Disposition','attachment',filename='2523reopen0510.png')
-	mime.add_header('Content-ID','<0>')
-	mime.add_header('X-Attachment-Id','0')
-	#把附件的内容读进来:
-	mime.set_payload(f.read())
-	# 用Base64编码:
-	encoders.encode_base64(mime)
-	# 添加到MIMEMultipart:
-	msg.attach(mime)
+#with open('C:/Users/jingoal/MyPython/learning_process/2523reopen0510.png','rb') as f:
+#	#设置附件的MIME和文件名，这里是png类型:
+#	mime=MIMEBase('image','png',filename='2523reopen0510.png')
+#	#加上必要的头信息:
+#	mime.add_header('Content-Disposition','attachment',filename='2523reopen0510.png')
+#	mime.add_header('Content-ID','<0>')
+#	mime.add_header('X-Attachment-Id','0')
+#	#把附件的内容读进来:
+#	mime.set_payload(f.read())
+#	# 用Base64编码:
+#	encoders.encode_base64(mime)
+#	# 添加到MIMEMultipart:
+#	msg.attach(mime)
+
+
+
 
 import smtplib
 server=smtplib.SMTP(smtp_server,25)
