@@ -22,14 +22,26 @@ def _format_addr(s):
 
 #通过SMTP发出去：
 #输入Email地址和口令
-from_addr=input('Form:')
+#from_addr=input('Form:')
+from_addr="my2011card@163.com"
 password=input('Password:')
 #输入收件人地址
-to_addr=input('To:')
+#to_addr=input('To:')
+to_addr="jingoaltest201202@163.com"
 #输入SMTP服务器地址
-smtp_server=input('SMTP server:')
+#smtp_server=input('SMTP server:')
+smtp_server="smtp.163.com"
 
-msg=MIMEText('hello, send by Python...', 'plain', 'utf-8')
+#构造MIMEText对象时，
+#第一个参数就是邮件正文，
+#第二个参数是MIME的subtype，传入'plain'表示纯文本，
+#最终的MIME就是'text/plain'，最后一定要用utf-8编码保证多语言兼容性。
+#msg=MIMEText('hello, send by Python...', 'plain', 'utf-8')
+#如果我们要发送HTML邮件，而不是普通的纯文本文件怎么办？
+#方法很简单，在构造MIMEText对象时，把HTML字符串传进去，再把第二个参数由plain变为html就可以了：
+msg = MIMEText('<html><body><h1>Hello</h1>' +
+    '<p>send by <a href="http://www.python.org">Python</a>...</p>' +
+    '</body></html>', 'html', 'utf-8')
 msg['From'] = _format_addr('Python爱好者 <%s>' % from_addr)
 msg['To'] = _format_addr('管理员 <%s>' % to_addr)
 msg['Subject'] = Header('来自SMTP的问候……', 'utf-8').encode()
